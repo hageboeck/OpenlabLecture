@@ -1,6 +1,6 @@
 # Openlab GPU Lecture Hands on
 
-This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's two methods to work on exercises:
+This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's two methods to work on these exercises:
 
 ### Method 1: Ssh / Terminal
 - Find a computer with a GPU. At CERN, you can e.g. use `ssh -X lxplus-gpu.cern.ch` for access to shared GPUs.
@@ -21,7 +21,7 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
     - Wait for the container to start up. If it doesn't start up, all GPUs are occupied. You will have to retry later, use method 1, or work in teams.
     - Use the notebooks corresponding to the exercises below.
 
-## Hello world example
+## 1. Hello world example
 Here we have a very basic helloWorld program that prints a message from the host.
 
 Your tasks:
@@ -29,7 +29,7 @@ Your tasks:
 - In the kernel, fill in the variables that print thread index and block index.
 - Try a few launch configurations with more threads / more blocks.
 
-## vectorAdd example
+## 2. vectorAdd example
 In this example, we add two arrays on the host and on the device. We use timers to measure the execution speed.
 
 Your tasks:
@@ -37,10 +37,21 @@ Your tasks:
 - Find an efficient launch configuration to fully use the device.
 
 
-## Julia example
+## 3. Julia example
 We compute the Julia and Fatou sets in the complex plane. This requires evaluating a quadratic complex polynomial for more than a million pixels in the complex plane. This is a perfect job for a GPU.
 
-
+Your tasks:
+1. In the `main()` function, allocate memory for all pixels. The writePPM function expects an array of pixels in the form `{y0={x0 x1 x2 x3 ...}, y1={x0 x1 x2 x3 ...}, ... y_n }`, so allocate a one-dimensional array with enough memory for `x*y` pixels. There's already a section that checks for possible cuda errors, so allocate the memory just before. Don't forget to free the memory when you're done.
+1. Launch the draft kernel from the main function. Check for possible errors.
+1. Figure out a way to compute the pixel indices `i` and `j` from `threadIdx.x` and `blockIdx.x`. Find a kernel launch configuration that covers the entire image.
+1. Implement the computation `z = z^2 + c`.
+    - We will not use any external complex number classes for this, so square the complex number by hand.
+    - Plug the computation in the loop. Check that it runs
+    - for a maximum of `maxIter` times
+    - or until z starts to diverge (`|z| >= maxMagnitude`).
+    - Check that the iteration at which z diverged is recorded in the pixel array. If it didn't diverge (e.g. because the point is part of the Julia set), set the pixel to 0.
+    - Note: We use 256 colours to colour the resulting image. We scale `k` into the range `[1, 256]` for best contrast, but it's not strictly necessary.
+1. Check if you can generate a Julia image like in the example.
 
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
