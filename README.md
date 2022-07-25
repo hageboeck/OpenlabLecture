@@ -51,7 +51,7 @@ Your tasks:
     - or until z starts to diverge (`|z| >= maxMagnitude`).
     - Check that the iteration at which z diverged is recorded in the pixel array. If it didn't diverge (e.g. because the point is part of the Julia set), set the pixel to 0.
     - Note: We use 256 colours to colour the resulting image. We scale `k` into the range `[1, 256]` for best contrast, but it's not strictly necessary.
-1. Check if you can generate a Julia image like in the example.
+1. Check if you can generate a Julia image like in [the example](julia_example.png).
 
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
