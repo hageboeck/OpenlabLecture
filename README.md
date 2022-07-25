@@ -19,7 +19,9 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
   [![OpenInSwan](https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png)](https://swan-k8s.cern.ch/user-redirect/download?projurl=https%3A%2F%2Fgithub.com%2Fhageboeck%2FOpenlabLecture.git)
     - Choose the bleeding-edge software stack with CUDA, i.e. "Bleeding Edge Cuda 11 (GPU)"
     - Wait for the container to start up. If it doesn't start up, all GPUs are occupied. You will have to retry later, use method 1, or work in teams.
-    - Use the notebooks corresponding to the exercises below.
+- Use [FirstSteps](FirstSteps.ipynb) for the first two tasks.
+- Finally, go to [Julia](Julia.ipynb).
+
 
 ## 1. Hello world example
 Here we have a very basic helloWorld program that prints a message from the host.
