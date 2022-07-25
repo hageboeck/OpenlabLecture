@@ -51,7 +51,22 @@ Your tasks:
     - or until z starts to diverge (`|z| >= maxMagnitude`).
     - Check that the iteration at which z diverged is recorded in the pixel array. If it didn't diverge (e.g. because the point is part of the Julia set), set the pixel to 0.
     - Note: We use 256 colours to colour the resulting image. We scale `k` into the range `[1, 256]` for best contrast, but it's not strictly necessary.
-1. Check if you can generate a Julia image like in [the example](julia_example.png).
+1. Check if you can generate a Julia image like this example ![JuliaExample](juliaExample.png).
+
+The executable can be invoked with the number `z` as argument:
+```
+./julia <realPart> <imaginaryPart>
+```
+
+Try for example:
+- `./julia -0.4 0.6`
+- `./julia 0.285 -0.01`
+
+To display the image, you can use imagemagick's `display`:
+```
+display julia.ppm
+```
+
 
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
