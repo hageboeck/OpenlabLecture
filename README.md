@@ -19,24 +19,24 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
   [![OpenInSwan](https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png)](https://swan-k8s.cern.ch/user-redirect/download?projurl=https%3A%2F%2Fgithub.com%2Fhageboeck%2FOpenlabLecture.git)
     - Choose the bleeding-edge software stack with CUDA, i.e. "Bleeding Edge Cuda 11 (GPU)"
     - Wait for the container to start up. If it doesn't start up, all GPUs are occupied. You will have to retry later, use method 1, or work in teams.
-- Use [FirstSteps](FirstSteps.ipynb) for the first two tasks.
-- Finally, go to [Julia](Julia.ipynb).
+- Use [FirstSteps notebook](FirstSteps.ipynb) for the first two tasks.
+- Finally, go to [Julia notebook](Julia.ipynb).
 
 
 ## 1. Hello world example
 Here we have a very basic helloWorld program that prints a message from the host.
 
 Your tasks:
-- Convert the HelloWorld function to a kernel, and call it from main().
-- In the kernel, fill in the variables that print thread index and block index.
-- Try a few launch configurations with more threads / more blocks.
+1. Convert the HelloWorld function to a kernel, and call it from main().
+1. In the kernel, fill in the variables that print thread index and block index.
+1. Try a few launch configurations with more threads / more blocks.
 
 ## 2. vectorAdd example
 In this example, we add two arrays on the host and on the device. We use timers to measure the execution speed.
 
 Your tasks:
-- Implement an efficient grid-strided loop. Currently, every thread steps through every item.
-- Find an efficient launch configuration to fully use the device.
+1. Implement an efficient grid-strided loop. Currently, every thread steps through every item.
+1. Find an efficient launch configuration to fully use the device.
 
 
 ## 3. Julia example
@@ -49,13 +49,13 @@ Your tasks:
 1. Implement the computation `z = z^2 + c`.
     - We will not use any external complex number classes for this, so square the complex number by hand.
     - Plug the computation in the loop. Check that it runs
-    - for a maximum of `maxIter` times
-    - or until z starts to diverge (`|z| >= maxMagnitude`).
-    - Check that the iteration at which z diverged is recorded in the pixel array. If it didn't diverge (e.g. because the point is part of the Julia set), set the pixel to 0.
+        - for a maximum of `maxIter` times
+        - or until z starts to diverge (`|z| >= maxMagnitude`).
+    - Check that the iteration at which z diverged is recorded in the pixel array. There's already a line of code that should take care of this, but ensure that your iteration counter ends up in that array.
     - Note: We use 256 colours to colour the resulting image. We scale `k` into the range `[1, 256]` for best contrast, but it's not strictly necessary.
-1. Check if you can generate a Julia image like this example ![JuliaExample](juliaExample.png).
+1. Check if you can generate a Julia image like this example ![JuliaExample](juliaExample.png)
 
-The executable can be invoked with the number `z` as argument:
+You can set the real and imaginary part for `c` as command-line arguments:
 ```
 ./julia <realPart> <imaginaryPart>
 ```
@@ -68,6 +68,7 @@ To display the image, you can use imagemagick's `display`:
 ```
 display julia.ppm
 ```
+If `display` doesn't work, check that you have an ssh connection with X forwarding (`ssh -X ...`).
 
 
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
