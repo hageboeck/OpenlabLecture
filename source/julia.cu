@@ -57,7 +57,7 @@ int main(int argc, char * argv[]) {
   // Task 1: Allocate memory
   // -----------------------
   unsigned char * pixels;
-  cudaMallocManaged(&pixels, sizeX * sizeY * sizeof(unsigned char));
+
 
   if (const auto errorCode = cudaGetLastError(); errorCode != cudaSuccess) {
     std::cerr << "When allocating memory, encountered cuda error " << errorCode << " '"
@@ -73,10 +73,10 @@ int main(int argc, char * argv[]) {
 
     // Task 2: Launch the kernel
     // -------------------------
-    constexpr auto nThread = 1024;
-    constexpr auto nBlock = (sizeX*sizeY + nThread - 1) / nThread;
+    constexpr auto nThread = 1;
+    constexpr auto nBlock = 1;
 
-    julia<<<nBlock, nThread>>>(-plotRange, plotRange, sizeX, -plotRange, plotRange, sizeY, 256, 2.f, pixels, cReal, cImag);
+    //julia<<<nBlock, nThread>>>(-plotRange, plotRange, sizeX, -plotRange, plotRange, sizeY, 256, 2.f, pixels, cReal, cImag);
 
     if (const auto errorCode = cudaDeviceSynchronize(); errorCode != cudaSuccess) {
       std::cerr << "When submitting kernel, encountered cuda error '"
@@ -88,8 +88,6 @@ int main(int argc, char * argv[]) {
   }
 
   writePPM(pixels, sizeX, sizeY, "julia.ppm");
-
-  cudaFree(pixels);
 
   return 0;
 }
