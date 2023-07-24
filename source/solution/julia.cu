@@ -81,7 +81,7 @@ int main(int argc, char * argv[]) {
     julia<<<nBlock, nThread>>>(-plotRange, plotRange, sizeX, -plotRange, plotRange, sizeY, 256, 2.f, pixels, cReal, cImag);
 
     if (const auto errorCode = cudaDeviceSynchronize(); errorCode != cudaSuccess) {
-      std::cerr << "When submitting kernel, encountered cuda error '" 
+      std::cerr << "When submitting kernel, encountered cuda error '"
                 << cudaGetErrorName(errorCode)
                 << "' with description:"
                 << cudaGetErrorString(errorCode) << "\n";
