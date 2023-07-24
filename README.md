@@ -3,10 +3,13 @@
 This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's two methods to work on these exercises:
 
 ### Method 1: Ssh / Terminal
-- Find a computer with a GPU. At CERN, you can e.g. use `ssh -X lxplus-gpu.cern.ch` for access to shared GPUs.
-- If you use lxplus, type `scl enable devtoolset-9 /bin/bash` to set up a compiler that supports c++17.
+- Find a computer with a GPU. At CERN, you can e.g. use
+  - `ssh -X lxplus-gpu.cern.ch`
+  - `ssh -X lxplus8-gpu.cern.ch`
+  - `ssh -X lxplus9-gpu.cern.ch`
+  for access to shared GPUs.
 - Clone this repo `git clone https://github.com/hageboeck/OpenlabLecture.git`
-- `cd OpenlabLecture`
+- `cd OpenlabLecture/source`
 - Use a terminal-based editor such as vim, nano, emacs to edit the files or try graphical editors like geany etc if you have an X client on your computer.
 - Compiling the executables.
     - Try it manually using `nvcc -O2 -g -std=c++17 <filename>.cu -o <executable>`
@@ -17,7 +20,7 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
 - If you don't have a cernbox account yet, go to [cernbox.cern.ch](https://cernbox.cern.ch)
 - Once you have a cernbox, click
   [![OpenInSwan](https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png)](https://swan-k8s.cern.ch/user-redirect/download?projurl=https%3A%2F%2Fgithub.com%2Fhageboeck%2FOpenlabLecture.git)
-    - Choose the bleeding-edge software stack with CUDA, i.e. "Bleeding Edge Cuda 11 (GPU)"
+    - Choose the a software stack with CUDA, i.e. "103 Cuda (GPU)"
     - Wait for the container to start up. If it doesn't start up, all GPUs are occupied. You will have to retry later, use method 1, or work in teams.
 - Use [FirstSteps notebook](FirstSteps.ipynb) for the first two tasks.
 - Finally, go to [Julia notebook](Julia.ipynb).
