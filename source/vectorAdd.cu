@@ -21,13 +21,14 @@ void add(int n,  int * x,  int * y)
 
 bool checkResult(int * array, size_t N) {
   for (size_t i = 0; i < N; ++i) {
-    if (array[i] != i) return false;
+    if (static_cast<unsigned int>(array[i]) != i) return false;
   }
   return true;
 }
 
 int main() {
-  const auto N = 100'000'000;
+  // This is the length of the vectors we want to add:
+  constexpr unsigned int N = 100'000'000;
 
   int * x;
   int * y;
@@ -85,7 +86,7 @@ int main() {
     const auto nBlock = 1;
     const auto nThread = 1;
 
-    //add<<< nBlock , nThread >>>(N, x, y);
+    add<<< nBlock , nThread >>>(N, x, y);
 
     if (const auto errorCode = cudaDeviceSynchronize();
         errorCode != cudaSuccess) {
@@ -100,7 +101,8 @@ int main() {
   {
     Timer timer{ "Access y array on host" };
 
-    std::cout << "\ny[0] = " << y[0]
+    std::cout << "Array back on host is:"
+      << "\ny[0] = " << y[0]
       << "\ny[" << N/2 << "] = " << y[N/2]
       << "\ny[" << N-1 << "] = " << y[N-1] << "\n";
   }
@@ -114,4 +116,3 @@ int main() {
 
   return 0;
 }
-

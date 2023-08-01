@@ -6,19 +6,27 @@
 
 // This function writes an image to disk
 void writePPM(unsigned char const * pixels, size_t nx, size_t ny, const char * filename);
-struct Timer;
 
 // Use this to change the floating-point precision in the kernel
 using FPType = double;
 
+// We use this to set up our image:
+struct ImageDimensions {
+  FPType xmin;
+  FPType xmax;
+  size_t nx;
+  FPType ymin;
+  FPType ymax;
+  size_t ny;
+};
+
 __global__
-void julia(FPType xmin, FPType xmax, size_t nx,
-           FPType ymin, FPType ymax, size_t ny,
-           size_t maxIter, FPType maxMagnitude, unsigned char * image,
-           FPType cReal, FPType cImag)
+void julia(const ImageDimensions dim, size_t maxIter, FPType maxMagnitude,
+           unsigned char * image, FPType cReal, FPType cImag)
 {
-  const FPType dx = (xmax - xmin) / nx;
-  const FPType dy = (ymax - ymin) / ny;
+  // Compute the size of a pixel in x and y direction
+  const FPType dx = (dim.xmax - dim.xmin) / dim.nx;
+  const FPType dy = (dim.ymax - dim.ymin) / dim.ny;
 
   // Task 3: From threadIdx and blockIdx, compute the indices i and j
   // to address the pixels in x and y direction
@@ -26,11 +34,11 @@ void julia(FPType xmin, FPType xmax, size_t nx,
   const size_t i = 0;
   const size_t j = 0;
 
-  if (i >= nx || j >= ny) return;
+  if (i >= dim.nx || j >= dim.ny) return;
 
   // Compute the starting values for z based on the pixel location
-  FPType zReal = xmin + i * dx;
-  FPType zImag = ymin + j * dy;
+  FPType zReal = dim.xmin + i * dx;
+  FPType zImag = dim.ymin + j * dy;
 
   // Task 4: Compute Julia set
   // -----------------------------
@@ -42,17 +50,18 @@ void julia(FPType xmin, FPType xmax, size_t nx,
     ++k;
   }
 
-  image[i + nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
+  image[i + dim.nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
 }
 
 
 int main(int argc, char * argv[]) {
   // Set up:
-  constexpr auto plotRange = 1.6;
+  constexpr double plotRange = 1.6;
   const FPType cReal = argc > 1 ? std::stod(argv[1]) : -0.4;
   const FPType cImag = argc > 2 ? std::stod(argv[2]) :  0.6;
   constexpr size_t sizeX = 1024;
   constexpr size_t sizeY = 1024;
+  const ImageDimensions dim{-plotRange, plotRange, sizeX, -plotRange, plotRange, sizeY};
 
   // Task 1: Allocate memory
   // -----------------------
@@ -76,7 +85,7 @@ int main(int argc, char * argv[]) {
     constexpr auto nThread = 1;
     constexpr auto nBlock = 1;
 
-    //julia<<<nBlock, nThread>>>(-plotRange, plotRange, sizeX, -plotRange, plotRange, sizeY, 256, 2.f, pixels, cReal, cImag);
+    julia<<<nBlock, nThread>>>(dim, 256, 2.f, pixels, cReal, cImag);
 
     if (const auto errorCode = cudaDeviceSynchronize(); errorCode != cudaSuccess) {
       std::cerr << "When submitting kernel, encountered cuda error '"
@@ -87,6 +96,7 @@ int main(int argc, char * argv[]) {
     }
   }
 
+  // write GPU arrays to disk as PPM image
   writePPM(pixels, sizeX, sizeY, "julia.ppm");
 
   return 0;
