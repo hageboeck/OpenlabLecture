@@ -1,4 +1,4 @@
 all: helloWorld vectorAdd julia
 
 %: %.cu
-	nvcc -std=c++17 -g -O2 $< -o $@
+	nvcc -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@
