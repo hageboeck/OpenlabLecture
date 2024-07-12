@@ -4,8 +4,11 @@
 #include <iostream>
 #include <cstdio>
 
-// This function writes an image to disk
+// This function writes an image to disk in PPM format
 void writePPM(unsigned char const * pixels, size_t nx, size_t ny, const char * filename);
+// This function does the same for PNG, but it requires boost gil and libpng. If these are available,
+// compile with -DUSE_BOOST_GIL. Otherwise, the function will print a warning.
+void writePNG(unsigned char const * pixels, size_t nx, size_t ny, const char * filename);
 
 // Use this to change the floating-point precision in the kernel
 using FPType = double;
