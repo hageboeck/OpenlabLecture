@@ -2,31 +2,32 @@
 
 This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's two methods to work on these exercises:
 
-### Method 1: Ssh / Terminal
+### Method 1: SSH / local machine
 - Find a computer with a GPU. At CERN, you can e.g. use
   - `ssh -X lxplus-gpu.cern.ch`
-  - `ssh -X lxplus8-gpu.cern.ch`
-  - `ssh -X lxplus9-gpu.cern.ch`
   for access to shared GPUs.
-- Clone this repo `git clone https://github.com/hageboeck/OpenlabLecture.git`
+- Clone the following repository: `git clone https://github.com/hageboeck/OpenlabLecture.git`
 - `cd OpenlabLecture/source`
 - Use a terminal-based editor such as vim, nano, emacs to edit the files or try graphical editors like geany etc if you have an X client on your computer.
-- Compiling the executables.
-    - Try it manually using `nvcc -O2 -g -std=c++17 <filename>.cu -o <executable>`
+- Compile the executables:
+    - Try it manually using `nvcc -O2 -g -std=c++17 <filename>.cu -o <executable>`.
     - Use the Makefile, e.g. `make helloWord` for only one executable or `make` to compile all in one go.
 
 
 ### Method 2: GPU-enabled SWAN session (limited number of slots)
 - If you don't have a cernbox account yet, go to [cernbox.cern.ch](https://cernbox.cern.ch)
-- Once you have a cernbox, click
-  [![OpenInSwan](https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png)](https://swan-k8s.cern.ch/user-redirect/download?projurl=https%3A%2F%2Fgithub.com%2Fhageboeck%2FOpenlabLecture.git)
-    - Choose the a software stack with CUDA, i.e. "103 Cuda (GPU)"
-    - Wait for the container to start up. If it doesn't start up, all GPUs are occupied. You will have to retry later, use method 1, or work in teams.
-- Use [FirstSteps notebook](FirstSteps.ipynb) for the first two tasks.
-- Finally, go to [Julia notebook](Julia.ipynb).
+- Go to [swan.cern.ch](https://swan.cern.ch), choose jupyterlab, LCG105 CUDA, start the session
+- On the left, find the button to clone a git repository, and clone:
+  `https://github.com/hageboeck/OpenlabLecture.git`
+- Now you have two choices:
+  1. Write CUDA in notebooks:
+     - Use [FirstSteps notebook](FirstSteps.ipynb) for the first two tasks.
+     - Finally, go to [Julia notebook](Julia.ipynb) for the third task.
+  2. Go to `source/` and work directly with the files. Open a terminal to compile and run the programs.
 
 
 ## 1. Hello world example
+[helloWorld.cu](source/helloWorld.cu)
 Here we have a very basic helloWorld program that prints a message from the host.
 
 Your tasks:
@@ -35,6 +36,7 @@ Your tasks:
 1. Try a few launch configurations with more threads / more blocks.
 
 ## 2. vectorAdd example
+[vectorAdd.cu](source/vectorAdd.cu)
 In this example, we add two arrays on the host and on the device. We use timers to measure the execution speed.
 
 Your tasks:
@@ -43,6 +45,7 @@ Your tasks:
 
 
 ## 3. Julia example
+[julia.cu](source/julia.cu)
 We compute the Julia and Fatou sets in the complex plane. This requires evaluating a quadratic complex polynomial for more than a million pixels in the complex plane. This is a perfect job for a GPU.
 
 Your tasks:
