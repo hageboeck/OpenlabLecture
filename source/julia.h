@@ -1,6 +1,12 @@
 #ifndef JULIA_H
 #define JULIA_H
 
+#ifdef USE_BOOST_GIL
+#include <boost/gil.hpp>
+#include <boost/gil/extension/io/png.hpp>
+namespace gil = boost::gil;
+#endif
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -51,6 +57,28 @@ void writePPM(unsigned char const * pixels, size_t nx, size_t ny, const char * f
     
   std::cout << "Wrote " << filename << "\n";
 }
+
+#ifdef USE_BOOST_GIL
+void writePNG(unsigned char const * pixels, size_t nx, size_t ny, const char * filename) {
+  gil::rgb8_image_t img(nx, ny);
+  auto view = gil::view(img);
+
+  for (size_t j = 0; j < ny; ++j) {
+    for (size_t i = 0; i < nx; ++i) {
+      unsigned char col = pixels[i + (ny-j-1)*nx];
+      auto [r, g, b] = colormapPPM(col);
+      gil::rgb8_pixel_t pix(r, g, b);
+      view(i, j) = pix;
+    }
+  }
+
+  gil::write_view(filename, gil::const_view(img), gil::png_tag{});
+}
+#else
+void writePNG(unsigned char const * /*pixels*/, size_t /*nx*/, size_t /*ny*/, const char * /*filename*/) {
+  std::cerr << "writePNG requires boost::gil and libpng\n";
+}
+#endif
 
 void juliaCPU(float xmin, float xmax, size_t nx,
            float ymin, float ymax, size_t ny,

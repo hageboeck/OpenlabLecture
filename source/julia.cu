@@ -98,6 +98,7 @@ int main(int argc, char * argv[]) {
 
   // write GPU arrays to disk as PPM image
   writePPM(pixels, sizeX, sizeY, "julia.ppm");
+  writePNG(pixels, sizeX, sizeY, "julia.png");
 
   return 0;
 }
