@@ -73,6 +73,7 @@ void writePNG(unsigned char const * pixels, size_t nx, size_t ny, const char * f
   }
 
   gil::write_view(filename, gil::const_view(img), gil::png_tag{});
+  std::cout << "Wrote " << filename << "\n";
 }
 #else
 void writePNG(unsigned char const * /*pixels*/, size_t /*nx*/, size_t /*ny*/, const char * /*filename*/) {

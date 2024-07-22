@@ -2,3 +2,4 @@
 *.ppm
 tmp/
 .swanproject
+.sys.*

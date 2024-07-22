@@ -25,9 +25,9 @@ struct Timer {
 
   ~Timer()
   {
+    using namespace std::chrono_literals;
     auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double, std::milli> ms{ end - _start };
-    std::cout << std::setw(outputWidth) << std::left << _message << " " << ms.count() << " ms\n";
+    std::cout << std::setw(outputWidth) << std::left << _message << " " << (end - _start)/1ms << " ms\n";
   }
 };
 
