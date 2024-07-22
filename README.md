@@ -86,6 +86,16 @@ display julia.ppm
 ```
 If `display` doesn't work, check that you have an ssh connection with X forwarding (`ssh -X ...`). You can also use `convert` to convert from ppm to something else.
 
+## Bonus tasks
+### Floating-point precision
+The draft Julia kernel was using double precision for the complex numbers. Check if the usage of single-precision floating-point numbers yields satisfying results, and check the impact on the kernel execution. How fast can we go? (Note: Check what type of GPU the kernel is running on. Is it a data-centre grade GPU?)
+
+### CPU equivalent
+There is a naive CPU kernel called `juliaCPU` in `julia.h` that can be used as a drop-in replacement for the GPU kernel. Check its speed. How much speed up against a single CPU thread can you reach with the GPU?
+
+### Grid-strided loops for an image of arbitrary size
+You might have written a kernel where `i = threadIdx.x`. Whereas this is sufficient for our problem size, the maximum number of threads per SM is 1024, so your kernel might not be able to deal with larger images. Remember that you can use the grid-strided loop to process an array of arbitray size. Try using a grid-strided loop on an image of 2048x2048 pixels. You can use a linearised index from 0 to 2048x2048, and compute i and j using modulus and integer division.
+
 
 This work is licensed under a
 [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
