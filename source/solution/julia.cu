@@ -6,6 +6,9 @@
 
 // This function writes an image to disk
 void writePPM(unsigned char const * pixels, size_t nx, size_t ny, const char * filename);
+// This function does the same for PNG, but it requires boost gil and libpng. If these are available,
+// compile with -DUSE_BOOST_GIL. Otherwise, the function will print a warning.
+void writePNG(unsigned char const * pixels, size_t nx, size_t ny, const char * filename);
 
 // Use this to change the floating-point precision in the kernel
 using FPType = double;
@@ -52,7 +55,7 @@ void julia(const ImageDimensions dim, size_t maxIter, FPType maxMagnitude,
     ++k;
   }
 
-  image[i + dim.nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
+  image[i + dim.nx*j] = k < maxIter ? (256 * k)/maxIter : 0;
 }
 
 
@@ -87,7 +90,7 @@ int main(int argc, char * argv[]) {
     constexpr auto nThread = 1024;
     constexpr auto nBlock = (sizeX*sizeY + nThread - 1) / nThread;
 
-    julia<<<nBlock, nThread>>>(dim, 256, 2.f, pixels, cReal, cImag);
+    julia<<<nBlock, nThread>>>(dim, 256, 1000.f, pixels, cReal, cImag);
 
     if (const auto errorCode = cudaDeviceSynchronize(); errorCode != cudaSuccess) {
       std::cerr << "When submitting kernel, encountered cuda error '"
@@ -98,8 +101,9 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  // write GPU arrays to disk as PPM image
-  writePPM(pixels, sizeX, sizeY, "julia.ppm");
+  // if libpng is not supported, we can fall back to PPM images
+  //writePPM(pixels, sizeX, sizeY, "julia.ppm");
+  // write GPU arrays to disk as PNG image
   writePNG(pixels, sizeX, sizeY, "julia.png");
 
   cudaFree(pixels);

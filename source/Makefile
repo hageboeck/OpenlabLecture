@@ -7,12 +7,12 @@ else
 endif 
 
 %: %.cu
-	nvcc -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@
+	nvcc -arch sm_80 -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@
 
 julia: julia.cu *.h
-	nvcc -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@ ${HAVE_GIL}
+	nvcc -arch sm_80 -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@ ${HAVE_GIL}
 %/julia: %/julia.cu *.h
-	nvcc -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@ ${HAVE_GIL}
+	nvcc -arch sm_80 -std=c++17 -Xcompiler -Wall -g -O2 $< -o $@ ${HAVE_GIL}
 
 clean:
 	rm -f helloWorld julia{,.png,.ppm} vectorAdd solution/julia{,.ppm,.png}

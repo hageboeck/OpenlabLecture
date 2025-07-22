@@ -81,18 +81,18 @@ void writePNG(unsigned char const * /*pixels*/, size_t /*nx*/, size_t /*ny*/, co
 }
 #endif
 
-void juliaCPU(float xmin, float xmax, size_t nx,
-           float ymin, float ymax, size_t ny,
+template<typename Dims>
+void juliaCPU(const Dims dim,
            size_t maxIter, float maxMagnitude, unsigned char *image,
            float cReal, float cImag)
 {
-  const float dx = (xmax - xmin) / nx;
-  const float dy = (ymax - ymin) / ny;
+  const float dx = (dim.xmax - dim.xmin) / dim.nx;
+  const float dy = (dim.ymax - dim.ymin) / dim.ny;
 
-  for (unsigned int j = 0; j < ny; ++j) {
-    for (unsigned int i = 0; i < nx; ++i) {
-      float zReal = xmin + i * dx;
-      float zImag = ymin + j * dy;
+  for (unsigned int j = 0; j < dim.ny; ++j) {
+    for (unsigned int i = 0; i < dim.nx; ++i) {
+      float zReal = dim.xmin + i * dx;
+      float zImag = dim.ymin + j * dy;
       size_t k = 0;
 
       do {
@@ -102,7 +102,7 @@ void juliaCPU(float xmin, float xmax, size_t nx,
         zReal = tmpzReal;
       } while (++k < maxIter && (zReal*zReal + zImag*zImag) < maxMagnitude*maxMagnitude);
 
-      image[i + nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
+      image[i + dim.nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
     }
   }
 }

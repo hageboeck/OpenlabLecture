@@ -6,21 +6,9 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
 
 ## Setup
 
-### Method 1: SSH / local machine
-- Find a computer with a GPU. At CERN, you can e.g. use
-  - `ssh -X lxplus-gpu.cern.ch`
-  for access to shared GPUs.
-- Clone the following repository: `git clone https://github.com/hageboeck/OpenlabLecture.git`
-- `cd OpenlabLecture/source`
-- Use a terminal-based editor such as vim, nano, emacs to edit the files or try graphical editors like geany etc if you have an X client on your computer.
-- To compile the executables:
-    - Try it manually using `nvcc -O2 -g -std=c++17 <filename>.cu -o <executable>`.
-    - Use the Makefile, e.g. `make helloWord` for only one executable or `make` to compile all in one go.
-
-
-### Method 2: GPU-enabled SWAN session (limited number of slots)
+### Method 1: GPU-enabled SWAN session (limited number of slots)
 - If you don't have a cernbox account yet, go to [cernbox.cern.ch](https://cernbox.cern.ch)
-- Go to [swan.cern.ch](https://swan.cern.ch), choose jupyterlab, LCG105 CUDA, start the session
+- Go to [swan.cern.ch](https://swan.cern.ch), choose jupyterlab, LCG software with CUDA, start the session
 - On the left, find the button to clone a git repository, and clone:
   `https://github.com/hageboeck/OpenlabLecture.git`
 - Now you have two choices:
@@ -28,6 +16,18 @@ This repository contains CUDA exercises for CERN Openlab's GPU lecture. There's 
      - Use [FirstSteps notebook](FirstSteps.ipynb) for the first two tasks.
      - Finally, go to [Julia notebook](Julia.ipynb) for the third task.
   2. Go to `source/` and work directly with the files. Open a terminal to compile and run the programs.
+
+### Method 2: SSH / local machine
+- Find a computer with a GPU. At CERN, you can e.g. use
+  - `ssh -X lxplus-gpu.cern.ch`
+  for access to shared GPUs.
+- Clone the following repository: `git clone https://github.com/hageboeck/OpenlabLecture.git`
+- `cd OpenlabLecture/source`
+- Use a terminal-based editor such as vim, nano, emacs to edit the files or try graphical editors like geany, VSCode etc.
+- To compile the executables:
+    - Try it manually using `nvcc -O2 -g -std=c++17 -arch <your GPU architecture, e.g. sm_80> <filename>.cu -o <executable>`.
+    - Use the Makefile, e.g. `make helloWord` for only one executable or `make` to compile all in one go.
+
 
 
 ----
@@ -69,7 +69,7 @@ Your tasks:
 1. Check if you can generate a Julia image like this example
    ![JuliaExample](juliaExample.png)
 
-You can set the real and imaginary part for `c` as command-line arguments:
+If you see the julia set, you can set the real and imaginary part for `c` as command-line arguments:
 ```
 ./julia <realPart> <imaginaryPart>
 ```
@@ -80,7 +80,7 @@ Try for example:
 
 To display the image, we have two options:
 - The image gets exported as png if boost GIL and libpng are available. The Makefile is not very smart in detecting those, so you might have to improvise a bit.
-- The image is also exported as PPM, a very simple text-based image format. You can use imagemagick's `display` to view it:
+- The image can also be exported as PPM, a very simple text-based image format. You can use imagemagick's `display` to view it:
 ```
 display julia.ppm
 ```

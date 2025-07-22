@@ -53,7 +53,7 @@ void julia(const ImageDimensions dim, size_t maxIter, FPType maxMagnitude,
     ++k;
   }
 
-  image[i + dim.nx*j] = k < maxIter ? 1 + (255 * k)/maxIter : 0;
+  image[i + dim.nx*j] = k < maxIter ? (256 * k)/maxIter : 0;
 }
 
 
@@ -88,7 +88,7 @@ int main(int argc, char * argv[]) {
     constexpr auto nThread = 1;
     constexpr auto nBlock = 1;
 
-    julia<<<nBlock, nThread>>>(dim, 256, 2.f, pixels, cReal, cImag);
+    julia<<<nBlock, nThread>>>(dim, 256, 1000.f, pixels, cReal, cImag);
 
     if (const auto errorCode = cudaDeviceSynchronize(); errorCode != cudaSuccess) {
       std::cerr << "When submitting kernel, encountered cuda error '"
@@ -99,8 +99,9 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  // write GPU arrays to disk as PPM image
-  writePPM(pixels, sizeX, sizeY, "julia.ppm");
+  // if libpng is not supported, we can fall back to PPM images
+  //writePPM(pixels, sizeX, sizeY, "julia.ppm");
+  // write GPU arrays to disk as PNG image
   writePNG(pixels, sizeX, sizeY, "julia.png");
 
   return 0;
